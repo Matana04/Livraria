@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="./token.js"></script>
+  </head>
+  <body>
+    <h1>Livro excluido com sucesso.</h1>
+    <a href="./livros.html">Voltar para início</a>
+  </body>
+
+  <script>
+    // ver editar.html
+    const query = window.location.search;
+    const params = new URLSearchParams(query);
+    const id = params.get("id");
+
+    deleteAutenticado(
+      "https://livraria-app.herokuapp.com/api/livros/" + id + "/"
+    );
+  </script>
+</html>

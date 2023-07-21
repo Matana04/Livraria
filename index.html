@@ -1,73 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>login</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
 
     <script src="./token.js"></script>
-</head>
-<body style="display:flex; align-items:center; justify-content:center;">
-<div class="login-page">
-  <div class="form">
-  
-    <div id="form" class="login-form" method="POST" action="https://livraria-app.herokuapp.com/api/token/">
-      <h2>Login</h2>
-      <input id="nome" type="text" placeholder="Nome" required />
-      <input id="senha" type="password" placeholder="senha" required/>
-      <button id="botao">Enviar</button>
-      <!-- <a class="btn" href="#">Sign in</a>!!!! -->
+  </head>
+  <body style="display: flex; align-items: center; justify-content: center">
+    <div class="login-page">
+      <div class="form">
+        <div
+          id="form"
+          class="login-form"
+          method="POST"
+          action="https://livraria-app.herokuapp.com/api/token/"
+        >
+          <h2>Login</h2>
+          <input id="nome" type="text" placeholder="Nome" required />
+          <input id="senha" type="password" placeholder="senha" required />
+          <button id="submit">Enviar</button>
+        </div>
+      </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+      // pegamos uma referência aos campos
+      const form = document.querySelector("#form");
+      const inputNome = document.querySelector("#nome");
+      const inputSenha = document.querySelector("#senha");
 
-  </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      // a função é assíncrona pois utiliza da palavra-chave "await"
+      // é uma função que, ao ser chamada, não será executada do início ao fim
+      // imediatamente, mas sim continuar executando enquanto o usuário mexe na página
+      async function login() {
+        // pegamos o URL do form
+        const url = form.getAttribute("action");
+        const nome = inputNome.value;
+        const senha = inputSenha.value;
 
+        // criamos um objeto com os dados do login
+        const login = {
+          username: nome,
+          password: senha,
+        };
 
-<script>
+        // devemos usar o "await" para "esperar" o término da função fetch
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(login),
+          headers: {
+            // precisamos especificar que estamos enviando um JSON
+            "Content-Type": "application/json",
+          },
+        });
 
-  const form = document.querySelector("#form")
-  const inputNome = document.querySelector("#nome")
-  const inputSenha = document.querySelector("#senha")
+        // da mesma forma, devemos "esperar" a conversão em json
+        const dados = await response.json();
 
-  async function formSubmit() {
-
-    const url = form.getAttribute("action")
-    const nome = inputNome.value;
-    const senha = inputSenha.value;
-
-    const login = {
-      username: nome,
-      password: senha
-    }
-
-    const response = await fetch(
-      url,
-      {
-        method: "POST",
-        body: JSON.stringify(login),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        // salvamos o token...
+        salvarToken(dados);
+        // ...e redirecionamos o usuário à página livros.html
+        window.location.replace("./livros.html");
       }
-    )
 
-    const dados = await response.json()
-
-    console.log(dados);
-
-    salvarToken(dados)
-
-    window.location.replace("./livros.html");
-  }
-
-  document.getElementById("botao").onclick = formSubmit;
-
-</script>
-
-</body>
+      // quando o usuário clicar no botão, a função "formSubmit" será chamada
+      document.getElementById("submit").onclick = login;
+    </script>
+  </body>
 </html>
-

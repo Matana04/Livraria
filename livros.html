@@ -12,8 +12,10 @@
 
 </head>
 <body style="display:flex; align-items:center; justify-content:center;">
+    
+  
     <div class="bah">
-        <h1>Livros</h1>
+        <img src="LogoHotsite_37.png" alt=""></a>
         <table>
             <thead>
                 <th>Titulo</th>
@@ -22,14 +24,17 @@
                 <th>Categoria</th>
                 <th>Editora</th>
                 <th>preço</th>
+                <th></th>
             </thead>
             <tbody id="tbody">
-                <tr>
-                  <!--  -->
-                </tr>
             </tbody>
         </table>
-    
+
+        <div class="btn">
+            <button id="botao">Excluir</button>
+            <button id="botao">Editar</button>
+            <button id="botao">Cadastrar    </button>
+        </div>
     </div>
 
     <script>
@@ -37,18 +42,21 @@
         const tbody = document.querySelector("#tbody")
 
         async function popularTabela() {
-            const livros = await enviarRequisicaoAutenticada("https://livraria-app.herokuapp.com/api/livros/")
+          // damos um GET na rota dos livros, o que nos retorna uma lista de livros
+            const livros = await getAutenticado("https://livraria-app.herokuapp.com/api/livros/")
 
+            console.log(livros);
+
+            // iteramos por ela
             for(const livro of livros) {
 
-                const autor = livro.autores[0].nome;
-                const categoria = livro.categoria.nome;
-
+                // pegamos os dados do objeto livro e criamos elementos
+                // HTML no JavaSCript com os valores
                 const tr = document.createElement("tr")
 
                 const tdAutor = document.createElement("td")
-                const ulAutores = document.createElement("ul")
 
+                const ulAutores = document.createElement("ul")
                 for(const autor of livro.autores) {
                     const li = document.createElement("li")
                     li.innerText = autor.nome
@@ -58,7 +66,7 @@
                 tdAutor.appendChild(ulAutores)
 
                 const tdCategoria = document.createElement("td")
-                tdCategoria.innerText = categoria
+                tdCategoria.innerText = livro.categoria.nome
 
                 const tdTitulo = document.createElement("td")
                 tdTitulo.innerText = livro.titulo
@@ -67,25 +75,40 @@
                 tdIsbn.innerText = livro.ISBN
 
                 const tdEditora = document.createElement("td")
-                const ulEditoras = document.createElement("ul")
-                for(const editora of livro.editoras) {
-                    const li = document.createElement("li")
-                    li.innerText = editora.nome
-                    ulEditoras.appendChild(li)
-                }
-
-                tdEditora.appendChild(ulEditoras)
+                tdEditora.innerText = livro.editora.nome
 
                 const tdPreco = document.createElement("td")
                 tdPreco.innerText = livro.preco
 
+                const tdAcoes = document.createElement("td")
+                const ulAcoes = document.createElement("ul")
+
+                const liEditarAcao = document.createElement("li")
+                const aEditarLink = document.createElement("a")
+                aEditarLink.innerText = "Editar"
+                aEditarLink.href = `./editar.html?id=${livro.id}`
+
+                const liExcluirAcao = document.createElement("li")
+                const aExcluirLink = document.createElement("a")
+                aExcluirLink.innerText = "Excluir"
+                aExcluirLink.href = `./excluir.html?id=${livro.id}`
+
+                liEditarAcao.appendChild(aEditarLink)
+                liExcluirAcao.appendChild(aExcluirLink)
+
+                ulAcoes.appendChild(liEditarAcao)
+                ulAcoes.appendChild(liExcluirAcao)
+
+                tdAcoes.appendChild(ulAcoes)
+
+                // adicionamos todos os elementos no HTML
                 tr.appendChild(tdTitulo)
                 tr.appendChild(tdIsbn)
                 tr.appendChild(tdAutor)
                 tr.appendChild(tdCategoria)
                 tr.appendChild(tdEditora)
                 tr.appendChild(tdPreco)
-
+                tr.appendChild(tdAcoes)
 
                 tbody.appendChild(tr)
             }

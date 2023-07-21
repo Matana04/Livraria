@@ -24,17 +24,17 @@
                 <th>Categoria</th>
                 <th>Editora</th>
                 <th>preço</th>
-                <th></th>
+                <th>Funções</th>
             </thead>
             <tbody id="tbody">
             </tbody>
         </table>
 
+        <p></p>
+        
         <div class="btn">
-            <button id="botao">Excluir</button>
-            <button id="botao">Editar</button>
-            <button id="botao">Cadastrar    </button>
-        </div>
+            <a href="cadastrar.html">Cadastrar</a>
+        </div> 
     </div>
 
     <script>
@@ -56,9 +56,9 @@
 
                 const tdAutor = document.createElement("td")
 
-                const ulAutores = document.createElement("ul")
+                const ulAutores = document.createElement("p")
                 for(const autor of livro.autores) {
-                    const li = document.createElement("li")
+                    const li = document.createElement("p")
                     li.innerText = autor.nome
                     ulAutores.appendChild(li)
                 }

@@ -3,8 +3,7 @@ html {
    }
 
 body{
-    margin:0;
-    padding:0;
+    margin: 0 auto;
     font-family: sans-serif;
     background: linear-gradient(#492342, #2772a1);
     padding: 2%;
@@ -12,6 +11,11 @@ body{
     align-items:center; 
     justify-content:center;
    }
+
+p{
+  text-align: justify;
+  line-height: 2%;
+}
 
 .bah{
   text-align: center;
@@ -48,21 +52,23 @@ td{
   text-align: center;
 }
 
-#botao {
+a {
   position: relative;
+  align-items: center;
+  
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px;
   color: #289bb8;
   background-color: #b3b3b3;
   font-size: 16px;
   text-decoration: none;
   overflow: hidden;
   transition: .5s;
-  margin-top: 15px;
   letter-spacing: 2px
+  
 
 }
-#botao:hover {
+a:hover {
   background: #289bb8;
   color: #ccc7c7;
   border-radius: 5px;
@@ -72,12 +78,12 @@ td{
               0 0 100px #289bb8;
 }
 
-#botao span {
+a span {
   position: absolute;
   display: block;
 }
 
-#botao span:nth-child(1) {
+a span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;

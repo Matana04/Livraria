@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Livros</title>
+    <link rel="stylesheet" href="styles2.css">
+
+
+    <script src="token.js"></script>
+
+</head>
+<body style="display:flex; align-items:center; justify-content:center;">
+    <div class="bah">
+        <h1>Livros</h1>
+        <table>
+            <thead>
+                <th>Titulo</th>
+                <th>ISBN</th>
+                <th>Autores</th>
+                <th>Categoria</th>
+                <th>Editora</th>
+                <th>preço</th>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                  <!--  -->
+                </tr>
+            </tbody>
+        </table>
+    
+    </div>
+
+    <script>
+
+        const tbody = document.querySelector("#tbody")
+
+        async function popularTabela() {
+            const livros = await enviarRequisicaoAutenticada("https://livraria-app.herokuapp.com/api/livros/")
+
+            for(const livro of livros) {
+
+                const autor = livro.autores[0].nome;
+                const categoria = livro.categoria.nome;
+
+                const tr = document.createElement("tr")
+
+                const tdAutor = document.createElement("td")
+                const ulAutores = document.createElement("ul")
+
+                for(const autor of livro.autores) {
+                    const li = document.createElement("li")
+                    li.innerText = autor.nome
+                    ulAutores.appendChild(li)
+                }
+
+                tdAutor.appendChild(ulAutores)
+
+                const tdCategoria = document.createElement("td")
+                tdCategoria.innerText = categoria
+
+                const tdTitulo = document.createElement("td")
+                tdTitulo.innerText = livro.titulo
+
+                const tdIsbn = document.createElement("td")
+                tdIsbn.innerText = livro.ISBN
+
+                const tdEditora = document.createElement("td")
+                const ulEditoras = document.createElement("ul")
+                for(const editora of livro.editoras) {
+                    const li = document.createElement("li")
+                    li.innerText = editora.nome
+                    ulEditoras.appendChild(li)
+                }
+
+                tdEditora.appendChild(ulEditoras)
+
+                const tdPreco = document.createElement("td")
+                tdPreco.innerText = livro.preco
+
+                tr.appendChild(tdTitulo)
+                tr.appendChild(tdIsbn)
+                tr.appendChild(tdAutor)
+                tr.appendChild(tdCategoria)
+                tr.appendChild(tdEditora)
+                tr.appendChild(tdPreco)
+
+
+                tbody.appendChild(tr)
+            }
+        }
+
+        popularTabela()
+    </script>
+</body>
+</html>

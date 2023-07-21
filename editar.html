@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- <link rel="stylesheet" href="EditaLivro.css" /> -->
+    <title>Edita Livro</title>
+
+    <script src="./token.js"></script>
+  </head>
+  <body>
+    <h1>Edita Livro</h1>
+    <div
+      id="form"
+      class="opc"
+      action="https://livraria-app.herokuapp.com/api/livros/"
+      method="get"
+    >
+      <h3>Título:</h3>
+      <input id="titulo" type="text" name="tituloE" />
+      <h3>ISBN:</h3>
+      <input id="isbn" type="text" name="ISBNE" />
+      <h3>Quantidade:</h3>
+      <input id="quantidade" type="number" name="quantidadeE" value="null" />
+      <h3>Preço:</h3>
+      <input id="preco" type="number" name="precoE" />
+      <h3>Autores:</h3>
+      <select name="autores" id="autores">
+        <!-- pegar os autores -->
+      </select>
+      <h3>Categoria:</h3>
+      <select name="categoria" id="categoria">
+        <!-- pegar as categorias -->
+      </select>
+      <h3>Editora:</h3>
+      <select name="editora" id="editora">
+        <!-- pegar as editoras -->
+      </select>
+      <input id="submit" class="button" type="submit" value="Salvar" />
+    </div>
+  </body>
+
+  <script>
+    // estamos passando o ID do livro por GET Parameter, ou seja, no final da URL
+    // dessa forma -> https://blabla?id=2
+    // a melhor forma de obtermos o ID de volta é da seguinte maneira:
+
+    // isso nos dá a string crua a requisição
+    const query = window.location.search;
+    // isso é um objeto próprio do javascript que torna fácil conseguir os valores dos
+    // parâmetros
+    const params = new URLSearchParams(query);
+    // bingo
+    // agora, nós temos acesso ao ID
+    const id = params.get("id");
+
+    // pegamos todos os inputs
+    const titulo = document.querySelector("#titulo");
+    const isbn = document.querySelector("#isbn");
+    const quantidade = document.querySelector("#quantidade");
+    const preco = document.querySelector("#preco");
+    const categoria = document.querySelector("#categoria");
+    const editora = document.querySelector("#editora");
+    const autores = document.querySelector("#autores");
+
+    // pegamos o form e a URL
+    const form = document.querySelector("#form");
+    const url = form.getAttribute("action");
+
+    function editar(e) {
+      // pegamos todos os valores
+      const body = {
+        titulo: titulo.value,
+        isbn: isbn.value,
+        // esse "+" antes converte os valores em números
+        preco: +preco.value,
+        quantidade: +quantidade.value,
+        categoria: +categoria.value,
+        editora: +editora.value,
+        autores: [+autores.value],
+      };
+
+      // removemos os campos nulos pra não dar pau
+      // iteramos sobre cada chave do objeto (um objeto é tipo um mapa)
+      for (const chave in body) {
+        const valor = body[chave];
+
+        // verificamos se o valor contido na chave é inválido
+        if (valor == null) {
+          // se sim, excluímos a chave
+          console.log(chave, body[chave]);
+          delete body[chave];
+        }
+      }
+
+      console.log(body);
+
+      patchAutenticado(url + id + "/", body);
+      window.location.replace("./livros.html");
+    }
+
+    // vamos buscar os dados da API para preencher os campos necessários
+    async function preencherCampos() {
+      // temos que preencher o campo dos autores, das editoras e das categorias
+
+      // pegamos a lista de autores, editoras e categorias da API
+      const listaAutores = await getAutenticado(
+        "https://livraria-app.herokuapp.com/api/autores/"
+      );
+      const listaEditoras = await getAutenticado(
+        "https://livraria-app.herokuapp.com/api/editoras/"
+      );
+      const listaCategorias = await getAutenticado(
+        "https://livraria-app.herokuapp.com/api/categorias/"
+      );
+
+      // adicionamos cada categoria disponível na API como opção do select
+      const selectCategorias = document.querySelector("#categoria");
+      for (const categoria of listaCategorias) {
+        const option = document.createElement("option");
+        option.innerText = categoria.descricao;
+        option.value = categoria.id;
+
+        selectCategorias.appendChild(option);
+      }
+
+      // adicionamos cada editora disponível na API como opção do select
+      const selectEditoras = document.querySelector("#editora");
+      for (const editora of listaEditoras) {
+        const option = document.createElement("option");
+        option.innerText = editora.nome;
+        option.value = editora.id;
+
+        selectEditoras.appendChild(option);
+      }
+
+      // adicionamos cada autor disponível na API como opção do select
+      const selectAutores = document.querySelector("#autores");
+      for (const autor of listaAutores) {
+        const option = document.createElement("option");
+        option.innerText = autor.nome;
+        option.value = autor.id;
+
+        selectAutores.appendChild(option);
+      }
+    }
+
+    document.getElementById("submit").onclick = editar;
+
+    preencherCampos();
+  </script>
+</html>

@@ -28,9 +28,9 @@
       <h3>Preço:</h3>
       <input id="preco" type="number" name="precoE" />
       <h3>Autores:</h3>
-      <select name="autores" id="autores">
-        <!-- pegar os autores -->
-      </select>
+        <select name="autores" id="autor1"></select>
+        <br>
+        <select name="autores" id="autor2"></select>
       <h3>Categoria:</h3>
       <select name="categoria" id="categoria">
         <!-- pegar as categorias -->
@@ -64,7 +64,10 @@
     const preco = document.querySelector("#preco");
     const categoria = document.querySelector("#categoria");
     const editora = document.querySelector("#editora");
-    const autores = document.querySelector("#autores");
+
+    const autor1 = document.querySelector("#autor1");
+    const autor2 = document.querySelector("#autor2");
+
 
     // pegamos o form e a URL
     const form = document.querySelector("#form");
@@ -74,13 +77,16 @@
       // pegamos todos os valores
       const body = {
         titulo: titulo.value,
-        isbn: isbn.value,
+        ISBN: isbn.value,
         // esse "+" antes converte os valores em números
         preco: +preco.value,
         quantidade: +quantidade.value,
         categoria: +categoria.value,
         editora: +editora.value,
-        autores: [+autores.value],
+        autores: [
+          +autor1.value,
+          +autor2.value,
+        ]
       };
 
       // removemos os campos nulos pra não dar pau
@@ -89,9 +95,8 @@
         const valor = body[chave];
 
         // verificamos se o valor contido na chave é inválido
-        if (valor == null) {
+        if (valor == null || valor == '') {
           // se sim, excluímos a chave
-          console.log(chave, body[chave]);
           delete body[chave];
         }
       }
@@ -99,7 +104,10 @@
       console.log(body);
 
       patchAutenticado(url + id + "/", body);
-      window.location.replace("./livros.html");
+
+      setTimeout(() => {
+        window.location.replace("./livros.html");
+      }, 1000);
     }
 
     // vamos buscar os dados da API para preencher os campos necessários
@@ -138,14 +146,25 @@
       }
 
       // adicionamos cada autor disponível na API como opção do select
-      const selectAutores = document.querySelector("#autores");
+      const selectAutores1 = document.querySelector("#autor1");
+      const selectAutores2 = document.querySelector("#autor2");
       for (const autor of listaAutores) {
         const option = document.createElement("option");
         option.innerText = autor.nome;
         option.value = autor.id;
 
-        selectAutores.appendChild(option);
+        const option2 = document.createElement("option");
+        option2.innerText = autor.nome;
+        option2.value = autor.id;
+
+        selectAutores1.appendChild(option);
+        selectAutores2.appendChild(option2);
       }
+     
+      console.log(selectAutores1);
+     
+      selectAutores1.firstChild.selected = true;
+      selectAutores2.firstChild.selected = true;
     }
 
     document.getElementById("submit").onclick = editar;

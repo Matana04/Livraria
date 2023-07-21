@@ -58,8 +58,12 @@ async function postAutenticado(url, body) {
     body: JSON.stringify(body),
   });
 
+  const json = await resposta.json();
+
+  console.log(json);
+
   // retornamos a resposta
-  return resposta.json();
+  return json;
 }
 
 /**
@@ -96,6 +100,10 @@ async function patchAutenticado(url, body) {
     body: JSON.stringify(body),
   });
 
+  const json = await resposta.json();
+
+  console.log(json);
+
   // retornamos a resposta
-  return resposta.json();
+  return json;
 }

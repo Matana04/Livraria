@@ -1,12 +1,13 @@
 html {
     height: 100%;
+    width: 100%;
    }
 
 body{
     margin: 0 auto;
     font-family: sans-serif;
-    background: linear-gradient(#492342, #2772a1);
-    padding: 2%;
+   background: linear-gradient(#492342, #2772a1);
+
     display:flex; 
     align-items:center; 
     justify-content:center;
@@ -23,6 +24,7 @@ p{
 
 img{
   margin-bottom: 2%;
+  width: 25%;
 }
 
 li{
@@ -45,6 +47,7 @@ table, th, td {
   background-color: #b3b3b3;
   text-align: center;
   border-radius: 1%;
+  
 }
 
 td{
@@ -53,9 +56,9 @@ td{
 }
 
 a {
+  border-radius: 9%;
   position: relative;
   align-items: center;
-  
   display: inline-block;
   padding: 12px;
   color: #289bb8;
@@ -90,4 +93,9 @@ a span:nth-child(1) {
   height: 2px;
   background: linear-gradient(90deg, transparent, #289bb8);
   animation: btn-anim1 1s linear infinite;
+}
+
+
+.footer{
+  
 }

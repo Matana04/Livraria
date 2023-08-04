@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Livros</title>
-    <link rel="stylesheet" href="styles2.css">
+    <link rel="stylesheet" href="livro.css">
 
 
     <script src="token.js"></script>
 
 </head>
 <body style="display:flex; align-items:center; justify-content:center;">
-    
-  
+      
     <div class="bah">
         <img src="LogoHotsite_37.png" alt=""></a>
         <table>
@@ -91,6 +90,7 @@
 
                 const liExcluirAcao = document.createElement("li")
                 const aExcluirLink = document.createElement("a")
+                
                 aExcluirLink.innerText = "Excluir"
                 aExcluirLink.href = `./excluir.html?id=${livro.id}`
 
